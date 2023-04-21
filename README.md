@@ -1,6 +1,6 @@
 # yadro_test_task
 
-Тестовое задание для кампании Yadro  
+Тестовое задание для компании Yadro  
 
 ## Description
 
