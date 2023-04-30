@@ -20,3 +20,6 @@ Cтек технологий:
 ## Launch
 
 ```./build.sh```
+
+## Tests
+```pytest```
