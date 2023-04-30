@@ -12,7 +12,7 @@ function App() {
   const [timerValue, setTimerValue] = useState<string>();
   const [timerId, setTimerId] = useState<number>(0);
 
-  const menu = useMemo(() => {navBar()}, [timerRun])
+  const menu = useMemo(() => navBar(), [timerRun])
   
   function navBar () {
     return (
@@ -24,6 +24,7 @@ function App() {
             <Nav className="me-auto">
               {!timerRun && (
               <Button
+                id='start_button'
                 style={{marginLeft: "5%", width: "200px"}} 
                 variant="success"
                 onClick={()=>setTimerRun(true)}>
@@ -31,6 +32,7 @@ function App() {
               )}
               {timerRun && (
               <Button
+                id='start_button'
                 style={{marginLeft: "5%", width: "200px"}}
                 variant="danger"
                 onClick={()=>setTimerRun(false)}>
@@ -64,7 +66,7 @@ function App() {
   return (
     <Fragment>
       <>
-      {navBar()}
+      {menu}
       </>
       <Grid 
         cols="3" xAlign='center'
@@ -72,7 +74,7 @@ function App() {
         <GridItem col="1"/>
         <GridItem col="1">
           <div>Секунд с начала эпохи:</div>
-          <div><b>{timerValue}</b></div>
+          <div id='timer'><b>{timerValue}</b></div>
         </GridItem>
       </Grid>
     </Fragment>

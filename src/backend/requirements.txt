@@ -15,3 +15,7 @@ uvicorn==0.21.1
 uvloop==0.17.0
 watchfiles==0.19.0
 websockets==11.0.2
+
+selenium==4.9.0
+pytest==7.3.1
+httpx==0.24.0
