@@ -56,7 +56,7 @@ function App() {
     )
     ws.onmessage = onMessage
     if (timerRun){
-      let id = +setInterval(() => ws.send('need_timer'), 1000)
+      let id = +setInterval(() => ws.send(JSON.stringify({ws_need_timer: 'need_timer'})), 1000)
       setTimerId(id)
     } else {
       clearInterval(timerId);

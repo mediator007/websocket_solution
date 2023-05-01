@@ -1,11 +1,14 @@
 import time
+import json
 
-from fastapi import WebSocket
+from fastapi import WebSocket, HTTPException
 from fastapi import APIRouter
 
 from main import logger
+from schemas import websocket_schemas
 
 api_router = APIRouter()
+
 
 @api_router.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -13,7 +16,15 @@ async def websocket_endpoint(websocket: WebSocket):
     logger.success('Websocket connection accept')
     while True:
         try:
-            await websocket.receive_text()
+            recieve_text = await websocket.receive_text()
+            recieve_object= json.loads(recieve_text)
+            try:
+                websocket_schemas.WebsocketInput(**recieve_object)
+            except ValueError:
+                logger.error('Bad ws message')
+                raise HTTPException(
+                    status_code=400, detail='Bad ws message'
+                    )
             resp = {'timer': time.time()}
             await websocket.send_json(resp)
         except Exception as e:
