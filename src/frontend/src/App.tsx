@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useMemo } from 'react';
+import { Fragment, useState, useEffect, useRef, useMemo } from 'react';
 import { Grid, GridItem } from '@consta/uikit/Grid';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
@@ -6,11 +6,12 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
-
 function App() {
   const [timerRun, setTimerRun] = useState<boolean>(false);
   const [timerValue, setTimerValue] = useState<string>();
   const [timerId, setTimerId] = useState<number>(0);
+
+  const [websocket, setSocket] = useState<WebSocket>();
 
   const menu = useMemo(() => navBar(), [timerRun])
   
@@ -51,15 +52,14 @@ function App() {
   };
 
   useEffect(()=> {
-    let ws = new WebSocket(
-      'ws://' + window.location.hostname + ':8000/api/ws'
-    )
-    ws.onmessage = onMessage
     if (timerRun){
-      let id = +setInterval(() => ws.send(JSON.stringify({ws_need_timer: 'need_timer'})), 1000)
-      setTimerId(id)
+      let ws = new WebSocket('ws://' + window.location.hostname + ':8000/api/ws');
+      ws.onmessage = onMessage;
+      setSocket(ws);
     } else {
-      clearInterval(timerId);
+      if (websocket) {
+        websocket.close();
+      };
     }
   }, [timerRun]);
   
